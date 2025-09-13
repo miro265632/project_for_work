@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import pandas as pd
-import csv
 
 
 class ExcelConverterApp:
@@ -28,15 +27,15 @@ class ExcelConverterApp:
 
     def convert_file(self):
         try:
-            # Чтение Excel файла  
+            # Чтение Excel файла
             df = pd.read_excel(self.file_path)
-            # Если файл имеет нужные столбцы, продолжите с обработкой  
-            # Здесь вам нужно будет адаптировать вашу логику обработки  
+            # Если файл имеет нужные столбцы, продолжите с обработкой
+            # Здесь вам нужно будет адаптировать вашу логику обработки
             a = df.values.tolist()
 
             c = a[0]
             q = []
-            k=[]
+            k = []
             r = a.copy()
             uid = []
             for i in r:
@@ -45,14 +44,32 @@ class ExcelConverterApp:
                 del i[-1]
                 del i[-1]
                 del i[-2]
-                x = int(i[0].split()[-1][:-4])
+                x = i[0].split()
                 print(x)
                 y = int(i[1])
+                if x is int:
+                    x = int(i[0].split()[-1][:-4])
+                else:
+                    x = int(i[0].split()[-1][3:-1])
+                    z = x / y
+                    if len(i[0].split()[-2]) > 5:
+                        x2 = int(i[0].split()[-2][3:-1])
+                        z2 = x2 / y
+                        one = 1 - z
+                        one2 = 1 - z2
+                        if abs(one) < abs(one2):
+                            x = x
+                        else:
+                            x = x2
                 z = y / x
+                print(z)
+                print(z - int(z))
+                if (z - int(z)) == 0.5:
+                    z += 0.0000000001
+                print(z)
                 z = round(z)
                 print(z)
-                m=x*z
-                print(m)
+                m = x * z
                 q.append(z)
                 k.append(m)
 
@@ -74,7 +91,7 @@ class ExcelConverterApp:
 
             a.insert(0, ['UUID', 'Наименование', 'Количество', 'Количество упаковок', 'Округление количество товаров'])
 
-            # Сохранение результата в новый Excel файл  
+            # Сохранение результата в новый Excel файл
             output_file = filedialog.asksaveasfilename(defaultextension=".xlsx",
                                                        filetypes=[("Excel files", "*.xlsx;*.xls")])
             if not output_file:
@@ -82,7 +99,7 @@ class ExcelConverterApp:
             df_output = pd.DataFrame(a[1:], columns=a[0])
             df_output.to_excel(output_file, index=False)
 
-            # Вывод сообщения об успешном завершении  
+            # Вывод сообщения об успешном завершении
             messagebox.showinfo("Успех", f"Файл успешно преобразован и сохранён как {output_file}")
 
         except Exception as e:
