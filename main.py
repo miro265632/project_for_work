@@ -43,24 +43,23 @@ class ExcelConverterApp:
                 del i[-1]
                 del i[-1]
                 del i[-2]
-                x = i[0].split()
                 y = int(i[1])
-                x = int(i[0].split()[-1][:-4])
-                if type(x) is int:
-                    x = x
+                x = i[0].split()[-1][:-4]
+                if x.isdigit():
+                    x = int(x)
                 else:
-                    x = int(i[0].split()[-1][3:-1])
-                    z = x / y
+                    x = i[0].split()[-1][3:-1]
+                    if x.isdigit():
+                        x = int(x)
+                        z = x / y
+                    else:
+                        print('При обработке данный строки ', i, ' произошла ошибка')
+                        continue
 
-                print(x)
                 z = y / x
-                print(z)
-                print(z - int(z))
                 if (z - int(z)) == 0.5:
                     z += 0.0000000001
-                print(z)
                 z = round(z)
-                print(z)
                 m = x * z
                 q.append(z)
                 k.append(m)
